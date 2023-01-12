@@ -1,0 +1,43 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="Eslint" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="15">
+            <item index="0" class="java.lang.String" itemvalue="wagtail" />
+            <item index="1" class="java.lang.String" itemvalue="django-environ" />
+            <item index="2" class="java.lang.String" itemvalue="wagtail-color-panel" />
+            <item index="3" class="java.lang.String" itemvalue="google-cloud-secret-manager" />
+            <item index="4" class="java.lang.String" itemvalue="psycopg2-binary" />
+            <item index="5" class="java.lang.String" itemvalue="Wand" />
+            <item index="6" class="java.lang.String" itemvalue="google-cloud-storage" />
+            <item index="7" class="java.lang.String" itemvalue="django-storages" />
+            <item index="8" class="java.lang.String" itemvalue="gunicorn" />
+            <item index="9" class="java.lang.String" itemvalue="graphene" />
+            <item index="10" class="java.lang.String" itemvalue="django-countries" />
+            <item index="11" class="java.lang.String" itemvalue="wagtail-bakery" />
+            <item index="12" class="java.lang.String" itemvalue="devtools" />
+            <item index="13" class="java.lang.String" itemvalue="django-manifest-loader" />
+            <item index="14" class="java.lang.String" itemvalue="awsebcli" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="applications.core.models.animal.Animal.objects" />
+          <option value="applications.core.models.owner.Owner.DoesNotExist" />
+          <option value="applications.core.models.dicose_category.DicoseCategory.objects" />
+          <option value="applications.core.models.dicose_category.DicoseCategory.DoesNotExist" />
+          <option value="django.db.models.fields.related.ForeignKey.earring_number" />
+          <option value="applications.core.models.locations_registry.LocationsRegistry.objects" />
+          <option value="applications.core.models.animal.Animal.DoesNotExist" />
+          <option value="applications.core.models.paddock.Paddock.objects" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
