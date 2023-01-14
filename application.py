@@ -1,5 +1,5 @@
 from transformers import pipeline
 
-pipe = pipeline("text-classification")
-result = pipe("This restaurant is awesome")
-print(result)
+nlg_pipeline = pipeline("text-generation", model="distilgpt2")
+response = nlg_pipeline("What is the weather like today?")[0]['generated_text']
+print(response)
