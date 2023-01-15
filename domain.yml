@@ -1,7 +1,11 @@
 version: '3.1'
 
+intents:
+- greet
+- goodbye
+- ask_joke
 actions:
-- GenerateResponseAction
+- action_generate_response
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
