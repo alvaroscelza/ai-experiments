@@ -1,21 +1,22 @@
-import os
-import pandas
-from sklearn.model_selection import train_test_split
+import pandas as pd
+from sklearn.tree import DecisionTreeClassifier
 
-# Generate list of conversations
-training_files_names = os.listdir('conversations_training_data/preprocessed_conversations')
-conversations = []
-for file_name in training_files_names:
-    with open(f'conversations_training_data/preprocessed_conversations/{file_name}', 'r', encoding='UTF-8') as file:
-        conversation = file.read()
-        conversations.append(conversation)
+# Define the dataset
+data = {'is_remote': [1, 1, 0, 0, 0, 1, 0, 1, 1, 0], 'interested': [1, 1, 0, 0, 0, 1, 0, 1, 1, 0]}
+df = pd.DataFrame(data)
 
-# Convert the list of conversations into a pandas DataFrame
-conversations_dataframe = pandas.DataFrame({'conversation': conversations})
+# Split the dataset into features and target
+x = df['is_remote']
+x = x.values.reshape(-1, 1)  # reshape the 1 dimension data to convert it into a column.
+y = df['interested']
 
-# Split the DataFrame into training and testing sets
-train_data, test_data = train_test_split(conversations_dataframe, test_size=0.2, random_state=42)
+# Create a decision tree classifier and fit it to the data
+clf = DecisionTreeClassifier()
+clf.fit(x, y)
 
-# Save the training and testing sets to files
-train_data.to_csv('conversations_training_data/train_data.csv', index=False)
-test_data.to_csv('conversations_training_data/test_data.csv', index=False)
+# Predict whether a job is of interest or not
+job1 = [[1]]  # remote job
+job2 = [[0]]  # non-remote job
+
+print(clf.predict(job1))
+print(clf.predict(job2))
