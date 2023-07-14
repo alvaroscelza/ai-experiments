@@ -1,3 +1,5 @@
+import os
+
 import spacy
 from spacy.cli import download
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
@@ -25,10 +27,26 @@ class SalaryCalculator:
 
 
 class ConversationFilesProcessor:
-    def process_conversation_file(self, file_path):
-        conversation = self.read_conversation(file_path)
-        messages = self.parse_conversation(conversation)
-        return [self.extract_sender_and_message(message) for message in messages]
+    def process_conversation_files(self, folder_path):
+        conversation_list = []
+
+        # Iterate over the files in the folder
+        for file_name in os.listdir(folder_path):
+            file_path = os.path.join(folder_path, file_name)
+
+            # Read the conversation from the file
+            conversation = self.read_conversation(file_path)
+
+            # Extract the remote status from the file
+            is_remote =self. extract_remote_status(file_path)
+
+            # Create a dictionary for the conversation and remote status
+            conversation_dict = {'conversation': conversation, 'is_remote': is_remote}
+
+            # Add the dictionary to the conversation list
+            conversation_list.append(conversation_dict)
+
+        return conversation_list
 
     @staticmethod
     def read_conversation(file_path):
@@ -36,16 +54,14 @@ class ConversationFilesProcessor:
             return file.read()
 
     @staticmethod
-    def parse_conversation(conversation):
-        messages = conversation.split('Sender:')
-        return [message.strip() for message in messages if message.strip()]
+    def extract_remote_status(file_path):
+        with open(file_path, 'r', encoding='utf-8') as file:
+            for line in file:
+                if line.startswith('remote: '):
+                    return line.strip().split(':')[1].strip().lower() == 'true'
 
-    @staticmethod
-    def extract_sender_and_message(message):
-        lines = message.split('\n')
-        sender = lines[0].strip()
-        message = ' '.join(line.strip() for line in lines[2:-1])
-        return {'sender': sender, 'message': message}
+        # Default to False if no remote status is found
+        return False
 
 
 class SpacyAdapter:
@@ -72,13 +88,6 @@ class SpacyAdapter:
 
 
 conversations_files_processor = ConversationFilesProcessor()
-file_name = 'conversations_training_data/raw_conversations/Atos-Paula_Calandrelli'
-sender_message_pairs = conversations_files_processor.process_conversation_file(file_name)
-spacy_adapter = SpacyAdapter()
-features = {'is_remote_job': spacy_adapter.is_remote_job(sender_message_pairs)}
-salary_calculator = SalaryCalculator()
-salary = salary_calculator.calculate_salary(features)
-
-print(f"Is Remote Job: {features['is_remote_job']}")
-print(f"Salary: {salary}")
+folder_path = 'conversations_training_data/'
+conversations = conversations_files_processor.process_conversation_files(folder_path)
 
