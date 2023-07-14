@@ -1,5 +1,6 @@
 import spacy
 from spacy.cli import download
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 
 class SalaryCalculator:
@@ -58,17 +59,16 @@ class SpacyAdapter:
             self.natural_language_processor = spacy.load(self.model_name)
 
     def is_remote_job(self, conversation):
-        for pair in conversation:
-            message = pair['message']
-            doc = self.natural_language_processor(message)
+        analyzer = SentimentIntensityAnalyzer()
+        remote_keywords = ["remote", "hybrid", "work from home"]
+        sentiment_scores = []
+        for message in conversation:
+            doc = self.natural_language_processor(message["message"])
             for token in doc:
-                if token.text.lower() == "remote":
-                    return True
-                if token.text.lower() == "not" and token.head.text.lower() == "remote":
-                    return False
-                if token.text.lower() == "hybrid" and token.head.text.lower() == "job":
-                    return True
-        return False
+                if token.text.lower() in remote_keywords:
+                    sentiment_scores.append(analyzer.polarity_scores(token.text)["compound"])
+        overall_sentiment = sum(sentiment_scores)
+        return overall_sentiment > 0
 
 
 conversations_files_processor = ConversationFilesProcessor()
